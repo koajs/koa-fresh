@@ -22,7 +22,12 @@ var koa = require('koa');
 var etag = require('koa-etag');
 var fresh = require('koa-fresh');
 
- var app = koa();
+var app = koa();
+
+// must following this:
+// * request: fresh => etag
+// * response: etag => fresh
+
 app.use(fresh());
 app.use(etag())
 
