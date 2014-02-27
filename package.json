@@ -1,6 +1,6 @@
 {
   "name": "koa-fresh",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "koa-fresh: HTTP response freshness testing middleware base on koa and node-fresh",
   "main": "index.js",
   "scripts": {
