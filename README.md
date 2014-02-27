@@ -7,7 +7,7 @@ koa-fresh
 
 ![logo](https://raw.github.com/fengmk2/koa-fresh/master/logo.png)
 
-koa-fresh desc
+HTTP response freshness testing middleware base on [koa](http://koajs.com) and [node-fresh](https://github.com/visionmedia/node-fresh).
 
 ## Install
 
@@ -18,10 +18,17 @@ $ npm install koa-fresh
 ## Usage
 
 ```js
-var koa-fresh = require('koa-fresh');
+var koa = require('koa');
+var etag = require('koa-etag');
+var fresh = require('koa-fresh');
 
-koa-fresh.foo(function (err) {
+ var app = koa();
+app.use(fresh());
+app.use(etag())
 
+app.use(function *(next) {
+  this.status = 500;
+  this.body = {error: 'err'};
 });
 ```
 
