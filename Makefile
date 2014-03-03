@@ -6,32 +6,28 @@ MOCHA_OPTS =
 install:
 	@npm install --registry=http://registry.cnpmjs.org --cache=${HOME}/.npm/.cache/cnpm
 
-test: install
-	@NODE_ENV=test ./node_modules/.bin/mocha \
-		--harmony-generators \
+test:
+	@NODE_ENV=test node --harmony \
+		node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha \
+		-- -u exports \
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		$(MOCHA_OPTS) \
 		$(TESTS)
+	@$(MAKE) check-coverage
 
-test-cov:
-	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=travis-cov
+check-coverage:
+	@./node_modules/.bin/istanbul check-coverage \
+		--statements 100 \
+		--functions 100 \
+		--branches 100 \
+		--lines 100
 
-test-cov-html:
-	@$(MAKE) test -s MOCHA_OPTS='--require blanket' REPORTER=html-cov | ./node_modules/.bin/cov
-
-test-coveralls: test
-	@echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
-	@-$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=mocha-lcov-reporter | ./node_modules/.bin/coveralls
-
-test-all: test test-cov
-
-autod: install
+autod:
 	@./node_modules/.bin/autod -w
 	@$(MAKE) install
 
-contributors: install
+contributors:
 	@./node_modules/.bin/contributors -f plain -o AUTHORS
 
 .PHONY: test
-

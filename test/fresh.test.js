@@ -40,7 +40,7 @@ describe('fresh.test.js', function () {
   });
 
   describe('when response status 20x', function () {
-    it('should request not etag return 200', function (done) {
+    it('should GET request not etag return 200 and etag', function (done) {
       var app = koa();
       app.outputErrors = true;
       app.use(fresh());
@@ -56,6 +56,45 @@ describe('fresh.test.js', function () {
       .expect('etag', '"-2137833482"')
       .expect({hi: 'foo'})
       .expect(200, done);
+    });
+
+    it('should HEAD request not etag return 200 and etag', function (done) {
+      var app = koa();
+      app.outputErrors = true;
+      app.use(fresh());
+      app.use(etag())
+
+      app.use(function *(next) {
+        this.status = 200;
+        this.body = {hi: 'foo'};
+      });
+
+      request(app.listen())
+      .head('/')
+      .expect('etag', '"-2137833482"')
+      .expect({})
+      .expect(200, done);
+    });
+
+    it('should POST request not etag return 200 and not etag', function (done) {
+      var app = koa();
+      app.outputErrors = true;
+      app.use(fresh());
+      app.use(etag())
+
+      app.use(function *(next) {
+        this.status = 201;
+        this.body = {hi: 'foo'};
+      });
+
+      request(app.listen())
+      .post('/')
+      .expect({hi: 'foo'})
+      .expect(201, function (err, res) {
+        should.not.exist(err);
+        should.not.exist(res.headers['etag']);
+        done();
+      });
     });
 
     it('should request with etag return 304', function (done) {

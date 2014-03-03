@@ -6,30 +6,18 @@
   "scripts": {
     "test": "make test"
   },
-  "config": {
-    "blanket": {
-      "pattern": "koa-fresh/lib"
-    },
-    "travis-cov": {
-      "threshold": 100
-    }
-  },
   "dependencies": {
-    "fresh": "0.2.2"
+
   },
   "devDependencies": {
     "autod": "*",
-    "blanket": "*",
     "contributors": "*",
-    "cov": "*",
-    "coveralls": "*",
     "koa": "0.5.0",
-    "koa-etag": "1.2.2",
+    "koa-etag": "1.2.3",
     "mocha": "*",
-    "mocha-lcov-reporter": "*",
     "should": "3.1.3",
     "supertest": "0.9.0",
-    "travis-cov": "*"
+    "istanbul": "git://github.com/gotwarlost/istanbul.git#harmony"
   },
   "homepage": "https://github.com/fengmk2/koa-fresh",
   "repository": {
@@ -42,7 +30,7 @@
     "email": "fengmk2@gmail.com"
   },
   "keywords": [
-    "koa",
+    "koa", "fresh",
     "koa-fresh", "etag", "304", "if-none-match", "cache", "response-cache"
   ],
   "engines": {
