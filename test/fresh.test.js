@@ -76,7 +76,7 @@ describe('fresh.test.js', function () {
       .expect(200, done);
     });
 
-    it('should POST request not etag return 200 and not etag', function (done) {
+    it('should POST request with etag return 200 and not etag', function (done) {
       var app = koa();
       app.outputErrors = true;
       app.use(fresh());
@@ -89,12 +89,10 @@ describe('fresh.test.js', function () {
 
       request(app.listen())
       .post('/')
+      .set('If-None-Match', '"-2137833482"')
+      .expect('etag', '"-2137833482"')
       .expect({hi: 'foo'})
-      .expect(201, function (err, res) {
-        should.not.exist(err);
-        should.not.exist(res.headers['etag']);
-        done();
-      });
+      .expect(201, done);
     });
 
     it('should request with etag return 304', function (done) {
