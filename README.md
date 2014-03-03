@@ -7,7 +7,7 @@ koa-fresh
 
 ![logo](https://raw.github.com/fengmk2/koa-fresh/master/logo.png)
 
-HTTP response freshness testing middleware base on [koa](http://koajs.com) and [node-fresh](https://github.com/visionmedia/node-fresh).
+HTTP response freshness testing middleware base on [koa](http://koajs.com).
 
 ## Install
 
