@@ -16,28 +16,23 @@
 
 module.exports = function () {
   return function *fresh(next) {
-    yield next;
+    yield* next;
 
-    if (!this.body) {
+    if (!this.body || this.status === 304) {
       return;
     }
 
     // determine if it's cacheable
     var cache = 'GET' === this.method || 'HEAD' === this.method;
     if (cache) {
-      cache = (this.status >= 200 && this.status < 300) || 304 === this.status;
+      cache = this.status >= 200 && this.status < 300;
     }
 
     // freshness
     if (cache && this.fresh) {
       this.status = 304;
-    }
-
-    // strip irrelevant headers
-    if (304 === this.status || 204 === this.status) {
       this.response.remove('Content-Type');
       this.response.remove('Content-Length');
-      this.body = '';
     }
   };
 }

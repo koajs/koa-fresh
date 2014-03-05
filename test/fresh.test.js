@@ -111,7 +111,12 @@ describe('fresh.test.js', function () {
       .set('If-None-Match', '"-2137833482"')
       .expect('etag', '"-2137833482"')
       .expect('')
-      .expect(304, done);
+      .expect(304, function (err, res) {
+        should.not.exist(err);
+        should.not.exist(res.headers['content-type']);
+        should.not.exist(res.headers['content-length']);
+        done();
+      });
     });
 
     it('should clean body when status 204', function (done) {
